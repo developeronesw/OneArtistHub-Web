@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OneArtistHub Admin</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <main class="section" style="max-width:1100px">
+    <div class="eyebrow">ONEARTISTHUB ADMIN</div>
+    <h1 style="font-family:'Space Grotesk';font-size:clamp(48px,7vw,88px);letter-spacing:-.06em">Sales Control.</h1>
+    <p>This is the private administration frontend. Authentication, orders and product management are handled through the existing secure Worker.</p>
+
+    <section id="admin-login" class="feature-grid" style="grid-template-columns:minmax(0,520px)">
+      <article>
+        <h2 style="font-size:36px">Sign in</h2>
+        <form id="login-form" style="display:grid;gap:15px">
+          <label>Email<input name="email" type="email" required></label>
+          <label>Password<input name="password" type="password" required></label>
+          <button class="btn primary" type="submit">SIGN IN →</button>
+          <p id="login-status" class="form-status"></p>
+        </form>
+      </article>
+    </section>
+
+    <section id="admin-app" hidden>
+      <div class="feature-grid">
+        <article><small>ORDERS</small><h3 id="stat-orders">—</h3></article>
+        <article><small>REVENUE</small><h3 id="stat-revenue">—</h3></article>
+        <article><small>HOSTED</small><h3 id="stat-hosted">—</h3></article>
+      </div>
+      <div style="margin-top:30px;display:flex;justify-content:space-between;align-items:center">
+        <h2 style="font-size:42px">Orders</h2>
+        <button class="btn secondary" id="logout" type="button">LOG OUT</button>
+      </div>
+      <div id="orders"></div>
+    </section>
+  </main>
+  <script src="../config.js"></script>
+  <script src="../src/admin.js"></script>
+</body>
+</html>
