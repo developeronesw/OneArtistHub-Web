@@ -1,0 +1,5 @@
+(()=>{const c=window.OAH_CONFIG,$=s=>document.querySelector(s);let busy=false;
+async function api(path,opt={}){const r=await fetch(c.apiBaseUrl+path,{credentials:"include",...opt,headers:{"Accept":"application/json","Content-Type":"application/json",...(opt.headers||{})}});const d=await r.json().catch(()=>({}));if(!r.ok)throw Error(d.error||"Request failed.");return d}
+async function boot(){try{const d=await api(c.endpoints.adminMe);if(d.ok)location.replace("./dashboard.html")}catch{}}
+$(" #login-form".trim()).onsubmit=async e=>{e.preventDefault();if(busy)return;busy=true;const f=new FormData(e.currentTarget),s=$("#login-status");s.textContent="Authenticating…";try{await api(c.endpoints.adminLogin,{method:"POST",body:JSON.stringify({email:f.get("email"),password:f.get("password")})});location.replace("./dashboard.html")}catch(x){s.textContent=x.message;busy=false}};
+boot()})();
