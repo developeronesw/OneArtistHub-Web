@@ -8,7 +8,11 @@ window.OAH_CONFIG = Object.freeze({
     webhook: "/software/webhook",
     adminLogin: "/admin/login",
     adminLogout: "/admin/logout",
-    adminOrders: "/admin/orders",
-    adminProducts: "/admin/products"
+    adminMe: "/admin/me",
+    adminOverview: "/admin/overview",
+    adminProducts: "/admin/products",
+    adminEmailSettings: "/admin/settings/email",
+    adminEmailTest: "/admin/email/test",
+    adminSquareStatus: "/admin/square/status"
   })
 });
