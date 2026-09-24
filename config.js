@@ -4,6 +4,8 @@ window.OAH_CONFIG = Object.freeze({
   endpoints: Object.freeze({
     products: "/software/products",
     checkout: "/software/checkout",
+    payment: "/software/payment",
+    squareConfig: "/software/config",
     contact: "/software/contact",
     webhook: "/software/webhook",
     adminLogin: "/admin/login",
