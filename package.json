@@ -5,6 +5,6 @@
   "description": "Official OneArtistHub website, storefront, and admin frontend",
   "scripts": {
     "dev": "python3 -m http.server 8788",
-    "check": "node --check src/storefront.js && node --check src/admin.js"
+    "check": "node --check src/storefront.js && node --check src/admin-v2.js"
   }
 }
