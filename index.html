@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="OneArtistHub — your music, your world. Build your own artist website or let us host it.">
+  <title>OneArtistHub — Your Music. Your World.</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="/">ONE<span>ARTIST</span>HUB</a>
+    <nav>
+      <a href="#platform">Platform</a>
+      <a href="#ai">AI Tools</a>
+      <a href="#audience">Audience</a>
+      <a href="#pricing">Pricing</a>
+    </nav>
+    <button class="cart-button" id="open-cart" type="button">CART <span id="cart-count">0</span></button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="eyebrow">THE ARTIST WEBSITE PLATFORM</div>
+      <h1>YOUR MUSIC.<br><em>YOUR WORLD.</em></h1>
+      <p>One powerful home for your music, releases, merch, fans, media and brand — built around one artist.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#pricing">BUILD MY HUB →</a>
+        <a class="btn secondary" href="#platform">EXPLORE THE PLATFORM</a>
+      </div>
+    </section>
+
+    <section id="platform" class="section">
+      <div class="eyebrow">THE PLATFORM</div>
+      <h2>Everything your artist brand needs.</h2>
+      <div class="feature-grid">
+        <article><b>Music & Releases</b><p>Singles, EPs, albums, mixtapes and playlists with an integrated player.</p></article>
+        <article><b>Merch & Store</b><p>Turn attention into sales with products, downloads and a slide-out cart.</p></article>
+        <article><b>Tour Dates</b><p>Keep every show, venue and ticket destination in one place.</p></article>
+        <article><b>Gallery</b><p>Give fans a visual world around the music.</p></article>
+        <article><b>EPK</b><p>Generate and present a professional electronic press kit.</p></article>
+        <article><b>Analytics</b><p>Understand how your audience interacts with your artist site.</p></article>
+      </div>
+    </section>
+
+    <section id="ai" class="section feature-section">
+      <div>
+        <div class="eyebrow">AI TOOLS</div>
+        <h2>Turn your ideas into artist-ready content.</h2>
+        <p>OneArtistHub brings creative tools closer to the place where your music already lives.</p>
+      </div>
+    </section>
+
+    <section id="audience" class="section">
+      <div class="eyebrow">AUDIENCE</div>
+      <h2>Your fans. Your data. Your relationship.</h2>
+      <p>Build a direct audience with email collection, social content and first-party site analytics.</p>
+    </section>
+
+    <section id="pricing" class="section pricing-section">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">CHOOSE YOUR WORLD</div>
+          <h2>Build it yourself.<br>Or let us handle it.</h2>
+        </div>
+      </div>
+      <div class="pricing">
+        <article class="price-card">
+          <div class="eyebrow">SELF-HOSTED</div>
+          <h3>Own the software.</h3>
+          <div class="price" data-product-price="self-hosted">$65 <span>one time</span></div>
+          <p>Own the software and host it wherever you want.</p>
+          <ul>
+            <li>Full OneArtistHub platform</li>
+            <li>Music & releases</li>
+            <li>Store & downloads</li>
+            <li>Photo gallery</li>
+            <li>Tour dates</li>
+            <li>AI tools</li>
+            <li>EPK generator</li>
+            <li>Analytics</li>
+            <li>Theme system</li>
+          </ul>
+          <button class="btn secondary add-product" data-product="self-hosted" type="button">GET ONEARTISTHUB</button>
+        </article>
+
+        <article class="price-card featured">
+          <div class="eyebrow">RECOMMENDED FOR ARTISTS</div>
+          <h3>OneArtistHub Hosted</h3>
+          <div class="price" data-product-price="hosted">$45 <span>/ year</span></div>
+          <p>You focus on the music. We handle the technology.</p>
+          <ul>
+            <li>Everything in OneArtistHub</li>
+            <li>Hosting</li>
+            <li>Custom domain</li>
+            <li>Automatic updates</li>
+            <li>Security maintenance</li>
+            <li>Bug fixes</li>
+            <li>D1 infrastructure</li>
+            <li>R2 media storage</li>
+            <li>Monitoring</li>
+            <li>Customer support</li>
+          </ul>
+          <button class="btn primary add-product" data-product="hosted" type="button">START MY ARTIST SITE →</button>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div>
+      <a class="brand" href="/">ONE<span>ARTIST</span>HUB</a>
+      <p>Build your artist world.</p>
+    </div>
+    <div class="footer-links">
+      <a href="#pricing">Pricing</a>
+      <a href="#" id="contact-link">Contact Us</a>
+    </div>
+  </footer>
+
+  <aside class="drawer" id="cart-drawer" aria-hidden="true">
+    <div class="drawer-head"><h2>Your Cart</h2><button id="close-cart" type="button">×</button></div>
+    <div id="cart-items" class="cart-items"></div>
+    <div class="cart-footer">
+      <div class="cart-total"><span>Total</span><strong id="cart-total">$0.00</strong></div>
+      <button class="btn primary full" id="checkout-button" type="button">CHECKOUT →</button>
+    </div>
+  </aside>
+
+  <div class="modal-backdrop" id="modal-backdrop" hidden>
+    <section class="modal" id="checkout-modal" hidden aria-modal="true" role="dialog">
+      <button class="modal-close" data-close-modal type="button">×</button>
+      <div class="eyebrow">CHECKOUT</div>
+      <h2>Complete your purchase.</h2>
+      <form id="checkout-form">
+        <label>Name<input name="customer_name" autocomplete="name" required></label>
+        <label>Email<input name="customer_email" type="email" autocomplete="email" required></label>
+        <button class="btn primary full" type="submit">CONTINUE TO PAYMENT →</button>
+        <p class="form-status" id="checkout-status"></p>
+      </form>
+    </section>
+
+    <section class="modal" id="contact-modal" hidden aria-modal="true" role="dialog">
+      <button class="modal-close" data-close-modal type="button">×</button>
+      <div class="eyebrow">CONTACT</div>
+      <h2>Talk to OneArtistHub.</h2>
+      <form id="contact-form">
+        <label>Name<input name="name" autocomplete="name" required></label>
+        <label>Email<input name="email" type="email" autocomplete="email" required></label>
+        <label>Message<textarea name="message" rows="6" required></textarea></label>
+        <button class="btn primary full" type="submit">SEND MESSAGE →</button>
+        <p class="form-status" id="contact-status"></p>
+      </form>
+    </section>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="src/storefront.js"></script>
+</body>
+</html>
