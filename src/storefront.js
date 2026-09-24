@@ -1,8 +1,12 @@
 (() => {
   const config = window.OAH_CONFIG;
   const cart = [];
-  const $ = (selector) => document.querySelector(selector);
+  let squareCard = null;
+  let squarePayments = null;
+  let squareConfig = null;
+  let squareInitializing = null;
 
+  const $ = (selector) => document.querySelector(selector);
   const drawer = $("#cart-drawer");
   const backdrop = $("#modal-backdrop");
   const checkoutModal = $("#checkout-modal");
@@ -83,6 +87,44 @@
     }
   }
 
+  async function loadSquareCard() {
+    if (squareCard) return squareCard;
+    if (squareInitializing) return squareInitializing;
+    squareInitializing = (async () => {
+      if (!window.Square) throw new Error("Secure payment service is still loading. Please try again.");
+      const response = await fetch(config.apiBaseUrl + config.endpoints.squareConfig, {
+        headers: { "Accept": "application/json" }
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data.application_id || !data.location_id) {
+        throw new Error(data.error || "Secure payment checkout is not configured.");
+      }
+      squareConfig = data;
+      squarePayments = window.Square.payments(data.application_id, data.location_id);
+      squareCard = await squarePayments.card();
+      await squareCard.attach("#card-container");
+      return squareCard;
+    })();
+    try {
+      return await squareInitializing;
+    } finally {
+      squareInitializing = null;
+    }
+  }
+
+  async function prepareCheckout() {
+    const item = cart[0];
+    if (!item) return;
+    const status = $("#checkout-status");
+    status.textContent = "Loading secure card entry…";
+    try {
+      await loadSquareCard();
+      status.textContent = "";
+    } catch (error) {
+      status.textContent = error.message;
+    }
+  }
+
   document.querySelectorAll(".add-product").forEach((button) => {
     button.addEventListener("click", () => {
       const product = button.dataset.product;
@@ -118,38 +160,76 @@
     if (!cart.length) return;
     closeCart();
     openModal(checkoutModal);
+    prepareCheckout();
   });
 
   $("#checkout-form").addEventListener("submit", async (event) => {
     event.preventDefault();
     const status = $("#checkout-status");
+    const payButton = $("#pay-button");
     const form = new FormData(event.currentTarget);
     const item = cart[0];
+    if (!item) return;
 
-    status.textContent = "Connecting to secure checkout…";
+    payButton.disabled = true;
+    status.textContent = "Securing your payment…";
 
     try {
-      const response = await fetch(config.apiBaseUrl + config.endpoints.checkout, {
+      const card = await loadSquareCard();
+      const name = String(form.get("customer_name") || "").trim();
+      const email = String(form.get("customer_email") || "").trim();
+      const verificationDetails = {
+        amount: (item.price / 100).toFixed(2),
+        billingContact: { givenName: name, email },
+        currencyCode: "USD",
+        intent: item.slug === "hosted" ? "STORE" : "CHARGE",
+        customerInitiated: true,
+        sellerKeyedIn: false
+      };
+      const result = await card.tokenize(verificationDetails);
+      if (result.status !== "OK" || !result.token) {
+        const detail = Array.isArray(result.errors) && result.errors.length
+          ? result.errors.map((error) => error.message || error.detail || "Card validation failed.").join(" ")
+          : "Card validation failed. Please check your payment details.";
+        throw new Error(detail);
+      }
+
+      status.textContent = item.slug === "hosted"
+        ? "Creating your secure annual subscription…"
+        : "Processing your secure payment…";
+
+      const response = await fetch(config.apiBaseUrl + config.endpoints.payment, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Accept": "application/json" },
         body: JSON.stringify({
           product: item.slug,
-          customer_name: form.get("customer_name"),
-          customer_email: form.get("customer_email")
+          customer_name: name,
+          customer_email: email,
+          source_id: result.token,
+          verification_token: result.verificationToken || ""
         })
       });
-
       const data = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(data.error || "Checkout could not be started.");
+      if (!response.ok) throw new Error(data.error || "Payment could not be completed.");
 
-      if (data.checkout_url) {
-        window.location.assign(data.checkout_url);
+      if (data.payment_status === "paid" || data.subscription_status === "active") {
+        status.textContent = item.slug === "hosted"
+          ? "Subscription active. Check your email for confirmation."
+          : "Payment complete. Check your email for your OneArtistHub delivery.";
+        cart.splice(0, 1);
+        renderCart();
+        event.currentTarget.reset();
         return;
       }
 
-      status.textContent = "Checkout was created. The payment flow is ready for the Worker response.";
+      status.textContent = "Your order was received and is being finalized. Check your email for confirmation.";
+      cart.splice(0, 1);
+      renderCart();
+      event.currentTarget.reset();
     } catch (error) {
       status.textContent = error.message;
+    } finally {
+      payButton.disabled = false;
     }
   });
 
