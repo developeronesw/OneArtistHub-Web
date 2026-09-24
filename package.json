@@ -1,0 +1,10 @@
+{
+  "name": "oneartisthub-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Official OneArtistHub website, storefront, and admin frontend",
+  "scripts": {
+    "dev": "python3 -m http.server 8788",
+    "check": "node --check src/storefront.js && node --check src/admin.js"
+  }
+}
