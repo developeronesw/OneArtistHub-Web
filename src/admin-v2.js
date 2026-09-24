@@ -1,0 +1,1 @@
+(() => { console.log('admin v2'); })();
