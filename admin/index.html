@@ -4,7 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive">
-  <title>OneArtistHub — Control Center</title>
+  <meta name="referrer" content="no-referrer">
+  <title>OneArtistHub — Admin Sign In</title>
   <link rel="stylesheet" href="../styles.css">
   <style>
     body{min-height:100vh;background:#050507}
@@ -28,97 +29,21 @@
   </style>
 </head>
 <body>
-  <section id="login-screen" class="login-screen">
+  <main id="login-screen" class="login-screen">
     <div class="login-card">
       <div class="admin-brand"><i></i><span>ONEARTISTHUB</span></div>
       <div class="eyebrow">PRIVATE CONTROL CENTER</div>
       <h1>Welcome back.</h1>
-      <p>Secure access to sales, pricing, orders, Square status and Cloudflare Email Service settings.</p>
+      <p>Sign in to access the private OneArtistHub control center.</p>
       <form id="login-form" class="login-form">
         <label>Admin email<input name="email" type="email" autocomplete="username" required></label>
         <label>Password<input name="password" type="password" autocomplete="current-password" minlength="8" required></label>
         <button class="btn primary full" type="submit">ENTER CONTROL CENTER →</button>
-        <div id="login-status" class="form-status"></div>
+        <div id="login-status" class="form-status" role="status" aria-live="polite"></div>
       </form>
     </div>
-  </section>
-
-  <div id="admin-shell" class="admin-shell" hidden>
-    <aside class="admin-sidebar">
-      <div class="admin-brand"><i></i><span>ONE<span style="color:var(--orange)">ARTIST</span>HUB</span></div>
-      <nav class="admin-nav">
-        <button class="active" data-view="dashboard">⌂ <span>Dashboard</span></button>
-        <button data-view="products">◈ <span>Products & Pricing</span></button>
-        <button data-view="orders">▤ <span>Orders</span></button>
-        <button data-view="customers">◎ <span>Customers</span></button>
-        <button data-view="email">✉ <span>Email Service</span></button>
-        <button data-view="payments">◉ <span>Payments</span></button>
-        <button data-view="settings">⚙ <span>Settings</span></button>
-      </nav>
-      <div class="admin-side-foot"><div class="security-pill">● Worker-secured control plane</div></div>
-    </aside>
-
-    <main class="admin-main">
-      <header class="admin-top">
-        <div class="admin-title">
-          <div class="eyebrow">ONEARTISTHUB / CONTROL</div>
-          <h1 id="page-title">Dashboard</h1>
-          <p id="admin-user">Securely connected to the OneArtistHub Worker.</p>
-        </div>
-        <div class="admin-actions"><button class="icon-btn" id="refresh" type="button">↻ Refresh</button><button class="icon-btn" id="logout" type="button">Log out</button></div>
-      </header>
-
-      <section class="view active" id="view-dashboard">
-        <div class="dashboard-grid">
-          <div class="metric"><small>TOTAL ORDERS</small><strong id="stat-orders">—</strong><div class="delta">All time</div></div>
-          <div class="metric"><small>REVENUE</small><strong id="stat-revenue">—</strong><div class="delta">Paid orders</div></div>
-          <div class="metric"><small>PAID</small><strong id="stat-paid">—</strong><div class="delta">Confirmed</div></div>
-          <div class="metric"><small>UNREAD MESSAGES</small><strong id="stat-messages">—</strong><div class="delta">Contact inbox</div></div>
-        </div>
-        <div class="glass" style="margin-top:18px"><div class="glass-head"><div><h2>Recent orders</h2><p>Latest activity from the commercial Worker.</p></div><button class="btn secondary" data-jump="orders" type="button">VIEW ALL</button></div><div class="glass-body"><div id="recent-orders"></div></div></div>
-      </section>
-
-      <section class="view" id="view-products">
-        <div class="glass"><div class="glass-head"><div><h2>Products & pricing</h2><p>Prices are authoritative in D1. The public site never trusts browser prices.</p></div></div><div class="glass-body"><div id="products-list"></div></div></div>
-      </section>
-
-      <section class="view" id="view-orders">
-        <div class="glass"><div class="glass-head"><div><h2>Orders</h2><p>Customer, product, payment and Square references.</p></div></div><div class="glass-body"><div class="table-wrap"><table class="admin-table"><thead><tr><th>Order</th><th>Customer</th><th>Product</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody id="orders-table"></tbody></table></div></div></div>
-      </section>
-
-      <section class="view" id="view-customers">
-        <div class="glass"><div class="glass-head"><div><h2>Customers</h2><p>Customers are derived from completed and pending orders; no unnecessary profile database is maintained.</p></div></div><div class="glass-body"><div class="table-wrap"><table class="admin-table"><thead><tr><th>Name</th><th>Email</th><th>Orders</th><th>Paid</th><th>Last order</th></tr></thead><tbody id="customers-table"></tbody></table></div></div></div>
-      </section>
-
-      <section class="view" id="view-email">
-        <div class="glass"><div class="glass-head"><div><h2>Cloudflare Email Service</h2><p>Outbound mail stays inside the Worker. No SMTP/API credential is stored in this repository.</p></div><span class="status" id="email-status">Checking…</span></div><div class="glass-body setting-card">
-          <div class="connection"><div class="connection-main"><div class="connection-icon">✉</div><div><h3>Worker email binding</h3><p>Cloudflare Email Service <code>EMAIL</code> binding</p></div></div><span class="status connected" id="email-binding-status">Worker controlled</span></div>
-          <div class="form-grid"><div class="field"><label>Contact destination</label><input id="contact-to" type="email" placeholder="Where Contact Us messages should go"></div><div class="field"><label>Verified sender</label><input value="contact@oneartisthub.site" disabled></div></div>
-          <div><button class="btn primary" id="save-email" type="button">SAVE EMAIL SETTINGS</button> <button class="btn secondary" id="test-email" type="button">SEND TEST EMAIL</button></div>
-          <p class="muted">Before sending live mail, onboard <strong>oneartisthub.site</strong> under Cloudflare Email Service → Email Sending and verify the sender domain.</p>
-        </div></div>
-      </section>
-
-      <section class="view" id="view-payments">
-        <div class="glass"><div class="glass-head"><div><h2>Square payments</h2><p>Square credentials stay in Worker secrets. This dashboard only reads connection health.</p></div><span class="status" id="square-status">Checking…</span></div><div class="glass-body setting-card">
-          <div class="connection"><div class="connection-main"><div class="connection-icon">S</div><div><h3>OneArtistHub Store</h3><p id="square-detail">Checking the secure Worker configuration…</p></div></div><span class="status" id="square-environment">—</span></div>
-          <div class="form-grid"><div class="field"><label>Access token</label><input value="Stored securely in Cloudflare Worker secrets" disabled></div><div class="field"><label>Location ID</label><input value="Stored as Worker configuration" disabled></div></div>
-          <p class="muted">Nothing sensitive is editable or returned to the browser. To rotate credentials, update the Worker secret/configuration in Cloudflare.</p>
-        </div></div>
-      </section>
-
-      <section class="view" id="view-settings">
-        <div class="glass"><div class="glass-head"><div><h2>System settings</h2><p>Operational information for the commercial site.</p></div></div><div class="glass-body setting-card">
-          <div class="connection"><div><h3>Public site</h3><p>https://www.oneartisthub.site</p></div><span class="status connected">LIVE CONFIG</span></div>
-          <div class="connection"><div><h3>Commerce backend</h3><p>https://connect.oneartisthub.site</p></div><span class="status connected">WORKER</span></div>
-          <div class="connection"><div><h3>Data layer</h3><p>D1 for products, orders and contact messages. KV for short-lived admin sessions and webhook idempotency.</p></div><span class="status connected">SECURE</span></div>
-          <div class="connection"><div><h3>Credentials</h3><p>No API keys, Square tokens, admin password or Cloudflare secrets are stored in the GitHub repository.</p></div><span class="status connected">CLEAN</span></div>
-        </div></div>
-      </section>
-    </main>
-  </div>
-  <div id="toast" class="toast"></div>
+  </main>
   <script src="../config.js"></script>
-  <script src="../src/admin-v2.js"></script>
+  <script src="../src/admin-login.js"></script>
 </body>
 </html>
