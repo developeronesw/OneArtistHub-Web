@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="referrer" content="no-referrer">
+  <title>OneArtistHub — Control Center</title>
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    body{min-height:100vh;background:#050507}
+    .admin-shell{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+    .admin-sidebar{position:sticky;top:0;height:100vh;padding:24px 18px;border-right:1px solid var(--border);background:rgba(9,9,14,.82);backdrop-filter:blur(24px);z-index:10}
+    .admin-brand{display:flex;align-items:center;gap:10px;padding:10px 12px 28px;font-family:"Space Grotesk";font-weight:800;letter-spacing:-.05em}
+    .admin-brand i{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--orange),var(--purple));box-shadow:0 0 30px rgba(155,77,255,.25)}
+    .admin-nav{display:grid;gap:7px}.admin-nav button{display:flex;align-items:center;gap:11px;width:100%;padding:12px 13px;border:1px solid transparent;border-radius:13px;background:transparent;color:var(--muted);text-align:left;cursor:pointer}.admin-nav button:hover,.admin-nav button.active{color:var(--text);background:rgba(255,255,255,.055);border-color:var(--border)}
+    .admin-side-foot{position:absolute;left:18px;right:18px;bottom:18px}.security-pill{display:flex;gap:8px;align-items:center;padding:10px 12px;border:1px solid rgba(71,255,176,.2);background:rgba(71,255,176,.055);border-radius:12px;color:var(--green);font-size:12px}
+    .admin-main{min-width:0;padding:28px 34px 70px}.admin-top{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:30px}.admin-title h1{font-size:clamp(38px,5vw,64px);margin:6px 0;letter-spacing:-.06em}.admin-title p{margin:0;color:var(--muted)}
+    .admin-actions{display:flex;gap:10px}.icon-btn{border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);padding:11px 14px;border-radius:12px;cursor:pointer}
+    .view{display:none}.view.active{display:block}.dashboard-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.metric{padding:20px;border:1px solid var(--border);background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025));border-radius:18px;box-shadow:0 18px 50px rgba(0,0,0,.14)}.metric small{color:var(--muted);font-size:11px;letter-spacing:.12em}.metric strong{display:block;font:700 34px "Space Grotesk";margin-top:9px;letter-spacing:-.05em}.metric .delta{font-size:12px;color:var(--green);margin-top:5px}
+    .glass{border:1px solid var(--border);background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018));border-radius:22px;box-shadow:0 25px 90px rgba(0,0,0,.2);overflow:hidden}.glass-head{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 24px;border-bottom:1px solid var(--border)}.glass-head h2{font-size:23px;margin:0}.glass-head p{margin:5px 0 0;color:var(--muted);font-size:13px}.glass-body{padding:22px 24px}
+    .table-wrap{overflow:auto}.admin-table{width:100%;border-collapse:collapse;min-width:760px}.admin-table th{text-align:left;color:#7f7e8b;font-size:10px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;padding:12px 14px;border-bottom:1px solid var(--border)}.admin-table td{padding:15px 14px;border-bottom:1px solid rgba(255,255,255,.06);font-size:13px}.admin-table tr:last-child td{border-bottom:0}.status{display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:6px 9px;font-size:11px;font-weight:700;background:rgba(255,255,255,.05);color:var(--muted)}.status:before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}.status.paid,.status.connected{color:var(--green);background:rgba(71,255,176,.07)}.status.pending{color:#ffc857}.status.failed,.status.offline{color:#ff6b8a}
+    .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.field{display:grid;gap:7px}.field label{font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}.field input,.field select{width:100%;padding:13px 14px;border:1px solid var(--border);background:#07070b;color:var(--text);border-radius:11px;outline:none}.field input:focus,.field select:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(155,77,255,.08)}
+    .product-row{display:grid;grid-template-columns:1.3fr .7fr .55fr .45fr auto;gap:12px;align-items:end;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.06)}.product-row:last-child{border-bottom:0}.product-row b{font-family:"Space Grotesk"}.muted{color:var(--muted);font-size:12px}
+    .setting-card{display:grid;gap:16px}.connection{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px;border:1px solid var(--border);border-radius:16px;background:rgba(255,255,255,.025)}.connection-main{display:flex;align-items:center;gap:14px}.connection-icon{width:44px;height:44px;display:grid;place-items:center;border-radius:13px;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.18);font-weight:800}.connection h3{margin:0 0 4px;font-size:17px}.connection p{margin:0;color:var(--muted);font-size:12px}
+    .login-screen{min-height:100vh;display:grid;place-items:center;padding:24px}.login-card{width:min(480px,100%);padding:34px;border:1px solid var(--border);background:linear-gradient(145deg,rgba(24,24,33,.88),rgba(10,10,15,.8));border-radius:26px;box-shadow:0 35px 120px rgba(0,0,0,.55);position:relative;overflow:hidden}.login-card:before{content:"";position:absolute;width:300px;height:300px;right:-140px;top:-140px;border-radius:50%;background:radial-gradient(circle,rgba(155,77,255,.25),transparent 68%)}.login-card h1{font-size:42px;margin:12px 0 8px;letter-spacing:-.06em}.login-card p{color:var(--muted);line-height:1.6}.login-form{display:grid;gap:15px;margin-top:25px}.login-form input{width:100%;padding:14px;border-radius:11px;border:1px solid var(--border);background:#06060a;color:var(--text)}.login-form label{display:grid;gap:7px;color:var(--muted);font-size:12px}
+    .toast{position:fixed;right:24px;bottom:24px;z-index:1000;padding:13px 16px;border:1px solid var(--border);border-radius:13px;background:#111118;box-shadow:0 20px 70px rgba(0,0,0,.45);display:none}.toast.show{display:block}.toast.ok{border-color:rgba(71,255,176,.25)}.toast.error{border-color:rgba(255,47,146,.35)}
+    @media(max-width:1050px){.admin-shell{grid-template-columns:1fr}.admin-sidebar{position:sticky;height:auto;top:0;display:flex;align-items:center;gap:15px;padding:12px 16px}.admin-brand{padding:0}.admin-nav{display:flex;overflow:auto}.admin-nav button{white-space:nowrap}.admin-side-foot{display:none}.dashboard-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:700px){.admin-main{padding:20px 15px 50px}.admin-top{align-items:flex-start;flex-direction:column}.dashboard-grid,.form-grid{grid-template-columns:1fr}.product-row{grid-template-columns:1fr 1fr}.product-row .save-product{grid-column:1/-1}.connection{align-items:flex-start;flex-direction:column}}
+  </style>
+</head>
+<body>
+  <div id="admin-shell" class="admin-shell" hidden>
+    <aside class="admin-sidebar">
+      <div class="admin-brand"><i></i><span>ONE<span style="color:var(--orange)">ARTIST</span>HUB</span></div>
+      <nav class="admin-nav">
+        <button class="active" data-view="dashboard">⌂ <span>Dashboard</span></button>
+        <button data-view="products">◈ <span>Products & Pricing</span></button>
+        <button data-view="orders">▤ <span>Orders</span></button>
+        <button data-view="customers">◎ <span>Customers</span></button>
+        <button data-view="email">✉ <span>Email Service</span></button>
+        <button data-view="payments">◉ <span>Payments</span></button>
+        <button data-view="settings">⚙ <span>Settings</span></button>
+      </nav>
+      <div class="admin-side-foot"><div class="security-pill">● Worker-secured control plane</div></div>
+    </aside>
+
+    <main class="admin-main">
+      <header class="admin-top">
+        <div class="admin-title">
+          <div class="eyebrow">ONEARTISTHUB / CONTROL</div>
+          <h1 id="page-title">Dashboard</h1>
+          <p id="admin-user">Securely connected to the OneArtistHub Worker.</p>
+        </div>
+        <div class="admin-actions"><button class="icon-btn" id="refresh" type="button">↻ Refresh</button><button class="icon-btn" id="logout" type="button">Log out</button></div>
+      </header>
+
+      <section class="view active" id="view-dashboard">
+        <div class="dashboard-grid">
+          <div class="metric"><small>TOTAL ORDERS</small><strong id="stat-orders">—</strong><div class="delta">All time</div></div>
+          <div class="metric"><small>REVENUE</small><strong id="stat-revenue">—</strong><div class="delta">Paid orders</div></div>
+          <div class="metric"><small>PAID</small><strong id="stat-paid">—</strong><div class="delta">Confirmed</div></div>
+          <div class="metric"><small>UNREAD MESSAGES</small><strong id="stat-messages">—</strong><div class="delta">Contact inbox</div></div>
+        </div>
+        <div class="glass" style="margin-top:18px"><div class="glass-head"><div><h2>Recent orders</h2><p>Latest activity from the commercial Worker.</p></div><button class="btn secondary" data-jump="orders" type="button">VIEW ALL</button></div><div class="glass-body"><div id="recent-orders"></div></div></div>
+      </section>
+
+      <section class="view" id="view-products">
+        <div class="glass"><div class="glass-head"><div><h2>Products & pricing</h2><p>Prices are authoritative in D1. The public site never trusts browser prices.</p></div></div><div class="glass-body"><div id="products-list"></div></div></div>
+      </section>
+
+      <section class="view" id="view-orders">
+        <div class="glass"><div class="glass-head"><div><h2>Orders</h2><p>Customer, product, payment and Square references.</p></div></div><div class="glass-body"><div class="table-wrap"><table class="admin-table"><thead><tr><th>Order</th><th>Customer</th><th>Product</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody id="orders-table"></tbody></table></div></div></div>
+      </section>
+
+      <section class="view" id="view-customers">
+        <div class="glass"><div class="glass-head"><div><h2>Customers</h2><p>Customers are derived from completed and pending orders; no unnecessary profile database is maintained.</p></div></div><div class="glass-body"><div class="table-wrap"><table class="admin-table"><thead><tr><th>Name</th><th>Email</th><th>Orders</th><th>Paid</th><th>Last order</th></tr></thead><tbody id="customers-table"></tbody></table></div></div></div>
+      </section>
+
+      <section class="view" id="view-email">
+        <div class="glass"><div class="glass-head"><div><h2>Cloudflare Email Service</h2><p>Outbound mail stays inside the Worker. No SMTP/API credential is stored in this repository.</p></div><span class="status" id="email-status">Checking…</span></div><div class="glass-body setting-card">
+          <div class="connection"><div class="connection-main"><div class="connection-icon">✉</div><div><h3>Worker email binding</h3><p>Cloudflare Email Service <code>EMAIL</code> binding</p></div></div><span class="status connected" id="email-binding-status">Worker controlled</span></div>
+          <div class="form-grid"><div class="field"><label>Contact destination</label><input id="contact-to" type="email" placeholder="Where Contact Us messages should go"></div><div class="field"><label>Verified sender</label><input value="contact@oneartisthub.site" disabled></div></div>
+          <div><button class="btn primary" id="save-email" type="button">SAVE EMAIL SETTINGS</button> <button class="btn secondary" id="test-email" type="button">SEND TEST EMAIL</button></div>
+          <p class="muted">Before sending live mail, onboard <strong>oneartisthub.site</strong> under Cloudflare Email Service → Email Sending and verify the sender domain.</p>
+        </div></div>
+      </section>
+
+      <section class="view" id="view-payments">
+        <div class="glass"><div class="glass-head"><div><h2>Square payments</h2><p>Square credentials stay in Worker secrets. This dashboard only reads connection health.</p></div><span class="status" id="square-status">Checking…</span></div><div class="glass-body setting-card">
+          <div class="connection"><div class="connection-main"><div class="connection-icon">S</div><div><h3>OneArtistHub Store</h3><p id="square-detail">Checking the secure Worker configuration…</p></div></div><span class="status" id="square-environment">—</span></div>
+          <div class="form-grid"><div class="field"><label>Access token</label><input value="Stored securely in Cloudflare Worker secrets" disabled></div><div class="field"><label>Location ID</label><input value="Stored as Worker configuration" disabled></div></div>
+          <p class="muted">Nothing sensitive is editable or returned to the browser. To rotate credentials, update the Worker secret/configuration in Cloudflare.</p>
+        </div></div>
+      </section>
+
+      <section class="view" id="view-settings">
+        <div class="glass"><div class="glass-head"><div><h2>System settings</h2><p>Operational information for the commercial site.</p></div></div><div class="glass-body setting-card">
+          <div class="connection"><div><h3>Public site</h3><p>https://www.oneartisthub.site</p></div><span class="status connected">LIVE CONFIG</span></div>
+          <div class="connection"><div><h3>Commerce backend</h3><p>https://connect.oneartisthub.site</p></div><span class="status connected">WORKER</span></div>
+          <div class="connection"><div><h3>Data layer</h3><p>D1 for products, orders and contact messages. KV for short-lived admin sessions and webhook idempotency.</p></div><span class="status connected">SECURE</span></div>
+          <div class="connection"><div><h3>Credentials</h3><p>No API keys, Square tokens, admin password or Cloudflare secrets are stored in the GitHub repository.</p></div><span class="status connected">CLEAN</span></div>
+        </div></div>
+      </section>
+    </main>
+  </div>
+  <div id="toast" class="toast"></div>
+  <div id="toast" class="toast"></div>
+  <script src="../config.js"></script>
+  <script src="../src/admin-v2.js"></script>
+</body>
+</html>
