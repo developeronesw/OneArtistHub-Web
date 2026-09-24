@@ -6,6 +6,7 @@
   <meta name="description" content="OneArtistHub — your music, your world. Build your own artist website or let us host it.">
   <title>OneArtistHub — Your Music. Your World.</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="https://web.squarecdn.com/v1/square.js"></script>
 </head>
 <body>
   <div class="noise" aria-hidden="true"></div>
@@ -136,7 +137,11 @@
       <form id="checkout-form">
         <label>Name<input name="customer_name" autocomplete="name" required></label>
         <label>Email<input name="customer_email" type="email" autocomplete="email" required></label>
-        <button class="btn primary full" type="submit">CONTINUE TO PAYMENT →</button>
+        <div class="payment-method">
+          <div class="payment-label">CARD PAYMENT</div>
+          <div id="card-container"></div>
+        </div>
+        <button class="btn primary full" id="pay-button" type="submit">PAY SECURELY →</button>
         <p class="form-status" id="checkout-status"></p>
       </form>
     </section>
