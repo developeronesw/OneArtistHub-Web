@@ -180,7 +180,7 @@
       const email = String(form.get("customer_email") || "").trim();
       const verificationDetails = {
         amount: (item.price / 100).toFixed(2),
-        billingContact: { givenName: name, email },
+        billingContact: { givenName: name.split(/\s+/)[0] || name, familyName: name.split(/\s+/).slice(1).join(" "), email },
         currencyCode: "USD",
         intent: item.slug === "hosted" ? "STORE" : "CHARGE",
         customerInitiated: true,
@@ -203,6 +203,7 @@
         headers: { "Content-Type": "application/json", "Accept": "application/json" },
         body: JSON.stringify({
           product: item.slug,
+          request_id: crypto.randomUUID(),
           customer_name: name,
           customer_email: email,
           source_id: result.token,
